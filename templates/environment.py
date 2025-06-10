@@ -20,7 +20,8 @@ TEMPLATE_NAMES = (
   'xchain-monitor',
   'river-node',
   'rpc-gateway',
-  'subgraph'
+  'subgraph',
+  'nginx-service'
 )
 
 GENERATED_FILE_WARNING_MESSAGE = """############### WARNING ####################

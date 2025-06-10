@@ -116,3 +116,11 @@ appOfApps:
         - ./values.yaml
         - ../../environments/gamma/rendered/global.yaml
         - ../../environments/gamma/rendered/app-registry-service.yaml
+
+    - name: nginx-service
+      disable: true
+      namespace: default
+      valueFiles:
+        - ./values.yaml
+        - ../../environments/gamma/rendered/global.yaml
+        - ../../environments/gamma/rendered/nginx-service.yaml
