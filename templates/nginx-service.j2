@@ -1,0 +1,4 @@
+image:
+  tag: "{{ nginxService.image.tag }}"
+resources:
+  {{ nginxService.resources | to_yaml | indent(2) }}

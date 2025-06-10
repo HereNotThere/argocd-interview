@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "nginx-service.fullname" . }}
+  labels:
+    {{- include "nginx-service.labels" . | nindent 4 }}
+spec:
+  replicas: 2
+  strategy:
+    type: Recreate #Tell k8s to recreate the pod when the deployment is updated
+  selector:
+    matchLabels:
+      {{- include "nginx-service.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        ad.datadoghq.com/nginx-service.logs: '[{"service": "nginx-service"}]' 
+        ad.datadoghq.com/nginx-service.checks: |
+         {
+            "openmetrics": {
+              "instances": [
+                {
+                  "prometheus_url": "http://%%host%%:8081/metrics",
+                  "namespace": "nginx-service",
+                  "metrics": ["*"]
+                }
+              ]
+            }
+         }
+      labels:
+        {{- include "nginx-service.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      serviceAccountName: main-service-account
+      containers:
+        - name: nginx
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+              name: http

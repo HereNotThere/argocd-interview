@@ -65,6 +65,17 @@ appRegistryService:
       cpu: 1
       memory: 2Gi
 
+nginxService:
+  image: 
+    tag: latest
+  resources:
+    requests:
+      cpu: '100m'
+      memory: 1Gi
+    limits:
+      cpu: '500m'
+      memory: 2Gi
+
 rpcGateway:
   image:
     tag: "5b23033"
@@ -112,5 +123,8 @@ appOfApps:
     namespace: default
     disable: true
   - name: app-registry-service
+    namespace: default
+    disable: true
+  - name: nginx-service
     namespace: default
     disable: true
