@@ -14,14 +14,14 @@ spec:
   template:
     metadata:
       annotations:
-        ad.datadoghq.com/app-registry-service.logs: '[{"service": "app-registry-service"}]' 
-        ad.datadoghq.com/app-registry-service.checks: |
+        ad.datadoghq.com/nginx-service.logs: '[{"service": "nginx-service"}]' 
+        ad.datadoghq.com/nginx-service.checks: |
          {
             "openmetrics": {
               "instances": [
                 {
                   "prometheus_url": "http://%%host%%:8081/metrics",
-                  "namespace": "app-registry-service",
+                  "namespace": "nginx-service",
                   "metrics": ["*"]
                 }
               ]
